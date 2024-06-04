@@ -137,6 +137,7 @@ if 'show_results' in st.session_state and st.session_state['show_results']:
         </body>
         </html>
         """
+        # Konfigurationspfad für wkhtmltopdf angeben
         config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
         pdf = pdfkit.from_string(html, False, configuration=config)
         st.download_button(label="Download PDF", data=pdf, file_name="Einkaufsliste.pdf", mime="application/pdf")
