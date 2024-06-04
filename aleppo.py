@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import pdfkit
 
 # Beispiel-Daten
 data = {
@@ -29,27 +30,27 @@ def apply_styles():
     st.markdown("""
     <style>
     .product-name {
-        font-size: 14px;
+        font-size: 18px;
         font-weight: bold;
-        margin-bottom: 2px;
+        margin-bottom: 5px;
     }
     .category-box {
-        background-color: rgba(0, 0, 0, 0.05);  /* Leichter Hintergrund */
-        padding: 5px;
+        padding: 10px;
         margin-bottom: 10px;
         border-radius: 5px;
     }
     .lebensmittel {
-        background-color: #ffcccc;  /* Leichtes Rot */
+        background-color: #ffeeee;  /* Sehr leichtes Rot */
     }
     .getraenke {
-        background-color: #cceeff;  /* Leichtes Blau */
+        background-color: #e6f7ff;  /* Sehr leichtes Blau */
     }
     .verpackung {
-        background-color: #ccffcc;  /* Leichtes Grün */
+        background-color: #f0fff0;  /* Sehr leichtes Grün */
     }
-    .stNumberInput {
-        padding: 2px;
+    .stNumberInput input {
+        padding: 5px;
+        font-size: 16px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -57,7 +58,7 @@ def apply_styles():
 apply_styles()
 
 # Start der Streamlit-App
-st.title("Einkaufsliste für mein Geschäft")
+st.title("Aleppo Liste")
 
 # Platz, um die Anzahl der Produkte einzugeben
 st.header("Produkte")
@@ -101,8 +102,41 @@ if st.button("OK"):
         st.session_state['selected_products'] = selected_products
         st.session_state['show_results'] = True
 
-# Neue Seite mit den ausgewählten Produkten
+# Neue Seite mit den ausgewählten Produkten und PDF-Export
 if 'show_results' in st.session_state and st.session_state['show_results']:
     st.header("Ausgewählte Produkte")
     selected_df = pd.DataFrame(list(st.session_state['selected_products'].items()), columns=['Produkt', 'Anzahl'])
     st.table(selected_df)
+
+    # PDF-Export
+    if st.button("Als PDF exportieren"):
+        html = f"""
+        <html>
+        <head>
+        <meta charset="UTF-8">
+        <style>
+            table, th, td {{
+                border: 1px solid black;
+                border-collapse: collapse;
+            }}
+            th, td {{
+                padding: 10px;
+                text-align: left;
+            }}
+            th {{
+                font-size: 18px;
+            }}
+            td {{
+                font-size: 16px;
+            }}
+        </style>
+        </head>
+        <body>
+        <h1>Aleppo Bestellung</h1>
+        {selected_df.to_html(index=False, escape=False)}
+        </body>
+        </html>
+        """
+        config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+        pdf = pdfkit.from_string(html, False, configuration=config)
+        st.download_button(label="Download PDF", data=pdf, file_name="Einkaufsliste.pdf", mime="application/pdf")
