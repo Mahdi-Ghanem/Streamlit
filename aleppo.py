@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
-import pdfkit
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
 
 # Beispiel-Daten
 data = {
@@ -110,34 +112,36 @@ if 'show_results' in st.session_state and st.session_state['show_results']:
 
     # PDF-Export
     if st.button("Als PDF exportieren"):
-        html = f"""
-        <html>
-        <head>
-        <meta charset="UTF-8">
-        <style>
-            table, th, td {{
-                border: 1px solid black;
-                border-collapse: collapse;
-            }}
-            th, td {{
-                padding: 10px;
-                text-align: left;
-            }}
-            th {{
-                font-size: 18px;
-            }}
-            td {{
-                font-size: 16px;
-            }}
-        </style>
-        </head>
-        <body>
-        <h1>Aleppo Bestellung</h1>
-        {selected_df.to_html(index=False, escape=False)}
-        </body>
-        </html>
-        """
-        # Konfigurationspfad für wkhtmltopdf angeben
-        config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
-        pdf = pdfkit.from_string(html, False, configuration=config)
-        st.download_button(label="Download PDF", data=pdf, file_name="Einkaufsliste.pdf", mime="application/pdf")
+        # Erstellen Sie einen BytesIO-Puffer für das PDF
+        pdf_buffer = BytesIO()
+
+        # Erstellen Sie das PDF
+        c = canvas.Canvas(pdf_buffer, pagesize=letter)
+        width, height = letter
+
+        # Überschrift
+        c.setFont("Helvetica-Bold", 20)
+        c.drawString(30, height - 40, "Aleppo Bestellung")
+
+        # Tabellenüberschrift
+        c.setFont("Helvetica-Bold", 14)
+        c.drawString(30, height - 80, "Produkt")
+        c.drawString(500, height - 80, "Anzahl")
+
+        # Tabelleninhalt
+        c.setFont("Helvetica", 12)
+        y_position = height - 100
+        for index, row in selected_df.iterrows():
+            c.drawString(30, y_position, row['Produkt'])
+            c.drawString(500, y_position, str(row['Anzahl']))
+            y_position -= 20
+            if y_position < 40:
+                c.showPage()
+                y_position = height - 40
+
+        c.save()
+
+        # Stellen Sie den BytesIO-Puffer auf den Anfang zurück
+        pdf_buffer.seek(0)
+
+        st.download_button(label="Download PDF", data=pdf_buffer, file_name="Einkaufsliste.pdf", mime="application/pdf")
