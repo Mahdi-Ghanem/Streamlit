@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
 from io import BytesIO
 
 # Beispiel-Daten
@@ -60,7 +62,7 @@ def apply_styles():
 apply_styles()
 
 # Start der Streamlit-App
-st.title("Aleppo Liste")
+st.title("🍔🍟 Aleppo Einkaufsliste")
 
 # Platz, um die Anzahl der Produkte einzugeben
 st.header("Produkte")
@@ -114,32 +116,50 @@ if 'show_results' in st.session_state and st.session_state['show_results']:
     if st.button("Als PDF exportieren"):
         # Erstellen Sie einen BytesIO-Puffer für das PDF
         pdf_buffer = BytesIO()
+        doc = SimpleDocTemplate(pdf_buffer, pagesize=(8 * cm, 24 * cm), topMargin=0.5 * cm)
+        elements = []
 
-        # Erstellen Sie das PDF
-        c = canvas.Canvas(pdf_buffer, pagesize=letter)
-        width, height = letter
+        # Styles
+        styles = getSampleStyleSheet()
+        title_style = styles['Title']
+        title_style.fontSize = 18  # Größere Schriftgröße für die neue Seitengröße
 
         # Überschrift
-        c.setFont("Helvetica-Bold", 20)
-        c.drawString(30, height - 40, "Aleppo Bestellung")
+        elements.append(Paragraph("Aleppo Einkauf", title_style))
+        elements.append(Spacer(1, 5))  # Kleinerer Abstand zwischen Überschrift und Tabelle
 
-        # Tabellenüberschrift
-        c.setFont("Helvetica-Bold", 14)
-        c.drawString(30, height - 80, "Produkt")
-        c.drawString(500, height - 80, "Anzahl")
+        # Tabelle
+        data = [["", "Produkt", "Menge"]] + [[str(i+1), row['Produkt'], row['Anzahl']] for i, row in selected_df.iterrows()]
+        table = Table(data, colWidths=[0.5 * cm, 6 * cm, 1.5 * cm])  # Spaltenbreite anpassen
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (1, 0), (-1, 0), colors.HexColor("#808080")),  # Grau für die Überschrift
+            ('TEXTCOLOR', (1, 0), (-1, 0), colors.white),
+            ('ALIGN', (0, 1), (0, -1), 'CENTER'),
+            ('ALIGN', (1, 1), (-1, -1), 'LEFT'),
+            ('ALIGN', (2, 1), (-1, -1), 'RIGHT'),  # Zahlen in der Menge-Spalte nach rechts ausrichten
+            ('FONTNAME', (1, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (1, 0), (-1, 0), 10),  # Kleinere Schriftgröße für die Produktnamen
+            ('FONTSIZE', (0, 1), (0, -1), 8),  # Kleinere Schriftgröße für die Index-Spalte
+            ('BOTTOMPADDING', (1, 0), (-1, 0), 8),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('LEFTPADDING', (1, 1), (-1, -1), 5),
+            ('RIGHTPADDING', (1, 1), (-1, -1), 5),
+            ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),  # Vertikale Ausrichtung in der Mitte
+            ('ROWHEIGHT', (0, 1), (-1, -1), 20),  # Zeilenhöhe vergrößern
+        ]))
 
-        # Tabelleninhalt
-        c.setFont("Helvetica", 12)
-        y_position = height - 100
-        for index, row in selected_df.iterrows():
-            c.drawString(30, y_position, row['Produkt'])
-            c.drawString(500, y_position, str(row['Anzahl']))
-            y_position -= 20
-            if y_position < 40:
-                c.showPage()
-                y_position = height - 40
+        # Hintergrundfarbe für jede zweite Zeile setzen
+        for i in range(1, len(data)):
+            if i % 2 == 0:
+                bg_color = colors.HexColor("#F0F0F0")  # Helle Grau Farbe für jede zweite Zeile
+                table.setStyle(TableStyle([('BACKGROUND', (0, i), (-1, i), bg_color)]))
 
-        c.save()
+        elements.append(table)
+
+        # PDF-Dokument erstellen
+        doc.build(elements)
 
         # Stellen Sie den BytesIO-Puffer auf den Anfang zurück
         pdf_buffer.seek(0)
