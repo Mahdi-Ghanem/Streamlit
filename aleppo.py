@@ -19,7 +19,9 @@ data = {
         "CC80 Sossenbeche BESCHER+", "Deckel 500 ST", "Döner Box GROSS", "Döner Box KLEIN", 
         "Hamburgerbox Klein 100st", "Papp schalen 250st", "Menubox Ungeteilt Beige 100st", 
         "Pergamentpapier 12,5kg", "Trinkbecher 100 st", "ALUFolie 1200g", 
-        "HP3 WARMHALTEVERP LANCH 125st", "Pfand Kisten Flaschen (24X0,330 cl)"
+        "HP3 WARMHALTEVERP LANCH 125st",
+        "Hollandaise", "Mehl", "Snack Dressing", "Potato wedges 2.5 kg", "Pommes salz",
+        "Döner Beutel 16×16", "Gabel Plastik", "Pizza Box 30", "Pizza Box 26", "Pragsmentpapier 1/4"
     ]
 }
 df = pd.DataFrame(data)
