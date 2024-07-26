@@ -12,6 +12,7 @@ data = {
         "Brokkoli 2,5kg", "Gouda (15kg)", "Hamburgerbrötchen 80g", "Hamburgerbrötchen 55g", 
         "Hollandaise Sauce", "Joghurt Griechisch", "Mozzarella", "Pommes 7 mm", 
         "Pommes 10 mm", "PUTEN 500g", "Salami Geschnitten 500G", "Spinat 2,5KG", 
+        "Hollandaise", "Mehl", "Snack Dressing", "Potato wedges 2.5 kg", "Pommes salz",
         "Ayran 20x250ml", "CocaCola 24x0,33 L", "Cola ZERO (24x0,33 L)", 
         "Fanta EXOTIK (24x0,33 L)", "MEZZO MIX (24x0,33)", "Spreit (24x0,33 L)", 
         "Uludag (24x0,33)", "WASSER 0,5 L x 24", "Servietten", "B3 Deckel 100 st", 
@@ -19,21 +20,15 @@ data = {
         "CC80 Sossenbeche BESCHER+", "Deckel 500 ST", "Döner Box GROSS", "Döner Box KLEIN", 
         "Hamburgerbox Klein 100st", "Papp schalen 250st", "Menubox Ungeteilt Beige 100st", 
         "Pergamentpapier 12,5kg", "Trinkbecher 100 st", "ALUFolie 1200g", 
-        "HP3 WARMHALTEVERP LANCH 125st",
-        "Hollandaise", "Mehl", "Snack Dressing", "Potato wedges 2.5 kg", "Pommes salz",
-        "Döner Beutel 16×16", "Gabel Plastik", "Pizza Box 30", "Pizza Box 26", "Pragsmentpapier 1/4"
+        "HP3 WARMHALTEVERP LANCH 125st","Döner Beutel 16×16", "Gabel Plastik", "Pizza Box 30", "Pizza Box 26", "Pragsmentpapier 1/4"
     ]
 }
-
-# Entferne das letzte Element
-data["Produkt"].remove("Pfand Kisten Flaschen (24X0,330 cl)")
-
 df = pd.DataFrame(data)
 
 # Kategorien definieren
-lebensmittel = df.iloc[0:12].append(df.iloc[36:41], ignore_index=True)
-getraenke = df.iloc[12:20]
-verpackung = df.iloc[20:36].append(df.iloc[41:], ignore_index=True)
+lebensmittel = df.iloc[0:17]
+getraenke = df.iloc[17:25]
+verpackung = df.iloc[25:]
 
 # CSS-Styling
 def apply_styles():
