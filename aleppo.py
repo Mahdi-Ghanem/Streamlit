@@ -23,9 +23,9 @@ data = {
 df = pd.DataFrame(data)
 
 # Kategorien definieren
-lebensmittel = df.iloc[0:17]
-getraenke = df.iloc[17:31]
-verpackung = df.iloc[31:]
+lebensmittel = df.iloc[0:16]
+getraenke = df.iloc[16:30]
+verpackung = df.iloc[30:]
 
 # CSS-Styling
 def apply_styles():
