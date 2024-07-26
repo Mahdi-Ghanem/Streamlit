@@ -9,10 +9,7 @@ from io import BytesIO
 # Beispiel-Daten
 data = {
     "Produkt": [
-        "Brokkoli 2,5kg", "Gouda (15kg)", "Hamburgerbrötchen 80g", "Hamburgerbrötchen 55g", 
-        "Hollandaise Sauce", "Joghurt Griechisch", "Mozzarella", "Pommes 7 mm", 
-        "Pommes 10 mm", "PUTEN 500g", "Salami Geschnitten 500G", "Spinat 2,5KG", 
-        "Hollandaise", "Mehl", "Snack Dressing", "Potato wedges 2.5 kg", "Pommes salz",
+        "Brokkoli 2,5kg", "Gouda (15kg)", "Hamburgerbrötchen 55g", "Hamburgerbrötchen 80g", "Hollandaise Sauce", "Joghurt Griechisch", "Mehl", "Mozzarella", "Pommes 10 mm", "Pommes 7 mm", "Pommes salz", "Potato wedges 2.5 kg", "PUTEN 500g", "Salami Geschnitten 500G", "Snack Dressing", "Spinat 2,5KG",
         "Ayran 20x250ml", "CocaCola Dosen","CocaCola Glas", "Cola ZERO Dosen", "Cola ZERO Glas",
         "Fanta EXOTIK Dosen","Fanta EXOTIK Glas", "MEZZO MIX Dosen","MEZZO MIX Glas", "Spreit Dosen", "Spreit Glas",
         "Uludag Dosen","Uludag Glas", "WASSER 0,5 L", "Servietten", "B3 Deckel 100 st", 
