@@ -137,7 +137,8 @@ if 'show_results' in st.session_state and st.session_state['show_results']:
             ('TEXTCOLOR', (1, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 1), (0, -1), 'CENTER'),
             ('ALIGN', (1, 1), (-1, -1), 'LEFT'),
-            ('ALIGN', (2, 1), (-1, -1), 'RIGHT'),  # Zahlen in der Menge-Spalte nach rechts ausrichten
+            ('ALIGN', (1, 1), (-1, -1), 'LEFT'),
+            #('ALIGN', (2, 1), (-1, -1), 'RIGHT'),  # Zahlen in der Menge-Spalte nach rechts ausrichten
             ('FONTNAME', (1, 0), (-1, 0), 'Helvetica-Bold'),
             ('FONTSIZE', (1, 0), (-1, 0), 10),  # Kleinere Schriftgröße für die Produktnamen
             ('FONTSIZE', (0, 1), (0, -1), 8),  # Kleinere Schriftgröße für die Index-Spalte
