@@ -19,7 +19,7 @@ data = {
         "B3 Salatschale Weiß 100 st", "CC375 BOX PP375 ML 50St", "CC50 Sossenbecher+D 500st", 
         "CC80 Sossenbeche BESCHER+", "Deckel 500 ST", "Döner Box GROSS", "Döner Box KLEIN", 
         "Hamburgerbox Klein 100st", "Papp Schalen GROß","Papp Schalen KLEIN", "Menubox Ungeteilt Beige 100st", 
-         "Trinkbecher 100 st", "ALUFolie 1200g", "ALUFolie 150m",
+         "Trinkbecher 100 st", "ALUFolie 150m",
         "HP3 WARMHALTEVERP LANCH 125st","Döner Beutel 16×16", "Gabel Plastik", "Pizza Box 30", "Pizza Box 26", "Pragsmentpapier 1/4","Pergamentpapier 1/16",
     ]
 }
