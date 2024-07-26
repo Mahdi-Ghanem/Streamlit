@@ -24,12 +24,16 @@ data = {
         "Döner Beutel 16×16", "Gabel Plastik", "Pizza Box 30", "Pizza Box 26", "Pragsmentpapier 1/4"
     ]
 }
+
+# Entferne das letzte Element
+data["Produkt"].remove("Pfand Kisten Flaschen (24X0,330 cl)")
+
 df = pd.DataFrame(data)
 
 # Kategorien definieren
-lebensmittel = df.iloc[0:12]
+lebensmittel = df.iloc[0:12].append(df.iloc[36:41], ignore_index=True)
 getraenke = df.iloc[12:20]
-verpackung = df.iloc[20:]
+verpackung = df.iloc[20:36].append(df.iloc[41:], ignore_index=True)
 
 # CSS-Styling
 def apply_styles():
