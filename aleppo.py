@@ -22,18 +22,23 @@ st.sidebar.title("Geschäfte")
 shops_df = pd.DataFrame(st.session_state.shops)
 
 # AgGrid für die interaktive Tabelle
-gb = GridOptionsBuilder.from_dataframe(shops_df)
-gb.configure_selection(selection_mode="single", use_checkbox=True)
-grid_options = gb.build()
+if not shops_df.empty:
+    gb = GridOptionsBuilder.from_dataframe(shops_df)
+    gb.configure_selection(selection_mode="single", use_checkbox=True)
+    grid_options = gb.build()
 
-grid_response = AgGrid(
-    shops_df,
-    gridOptions=grid_options,
-    update_mode=GridUpdateMode.SELECTION_CHANGED,
-    height=200,
-    width='100%',
-    reload_data=True,
-)
+    grid_response = AgGrid(
+        shops_df,
+        gridOptions=grid_options,
+        update_mode=GridUpdateMode.SELECTION_CHANGED,
+        height=200,
+        width='100%',
+        reload_data=True,
+    )
+
+    selected_rows = grid_response['selected_rows']
+else:
+    selected_rows = []
 
 # Schaltfläche zum Hinzufügen eines neuen Geschäfts
 if st.sidebar.button('+ Geschäft hinzufügen'):
@@ -41,8 +46,8 @@ if st.sidebar.button('+ Geschäft hinzufügen'):
 
 # Schaltfläche zum Löschen eines Geschäfts
 if st.sidebar.button('- Geschäft löschen'):
-    if grid_response['selected_rows']:
-        shop_to_delete = grid_response['selected_rows'][0]['Geschäft']
+    if selected_rows:
+        shop_to_delete = selected_rows[0]['Geschäft']
         delete_shop(shop_to_delete)
 
 # Hauptseite
