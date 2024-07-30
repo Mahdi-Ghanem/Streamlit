@@ -1,6 +1,4 @@
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
-import pandas as pd
 
 # Initialisiere die Session-State für die Liste der Geschäfte
 if 'shops' not in st.session_state:
@@ -9,54 +7,28 @@ if 'shops' not in st.session_state:
 # Funktion zum Hinzufügen eines neuen Geschäfts
 def add_shop():
     new_shop_name = f"Geschäft {len(st.session_state.shops) + 1}"
-    st.session_state.shops.append({"Geschäft": new_shop_name})
+    st.session_state.shops.append(new_shop_name)
 
 # Funktion zum Löschen eines Geschäfts
 def delete_shop(shop_to_delete):
-    st.session_state.shops = [shop for shop in st.session_state.shops if shop["Geschäft"] != shop_to_delete]
+    st.session_state.shops = [shop for shop in st.session_state.shops if shop != shop_to_delete]
 
 # Sidebar
 st.sidebar.title("Geschäfte")
 
-# Konvertiere die Liste der Geschäfte in einen DataFrame für AgGrid
-shops_df = pd.DataFrame(st.session_state.shops)
-
-# AgGrid für die interaktive Tabelle
-if not shops_df.empty:
-    gb = GridOptionsBuilder.from_dataframe(shops_df)
-    gb.configure_selection(selection_mode="single", use_checkbox=True)
-    grid_options = gb.build()
-
-    grid_response = AgGrid(
-        shops_df,
-        gridOptions=grid_options,
-        update_mode=GridUpdateMode.SELECTION_CHANGED,
-        height=200,
-        width='100%',
-        reload_data=True,
-    )
-
-    selected_rows = grid_response['selected_rows']
-else:
-    selected_rows = []
+# Anzeige der vorhandenen Geschäfte und Eingabefelder zur Umbenennung
+for i, shop in enumerate(st.session_state.shops):
+    cols = st.sidebar.columns([4, 1])
+    new_name = cols[0].text_input(f"Name des Geschäfts {i+1}", value=shop, key=f"shop_{i}")
+    st.session_state.shops[i] = new_name
+    if cols[1].button("...", key=f"delete_{i}"):
+        if st.sidebar.button(f"Löschen bestätigen {i}", key=f"confirm_delete_{i}"):
+            delete_shop(shop)
 
 # Schaltfläche zum Hinzufügen eines neuen Geschäfts
 if st.sidebar.button('+ Geschäft hinzufügen'):
     add_shop()
 
-# Schaltfläche zum Löschen eines Geschäfts
-if st.sidebar.button('- Geschäft löschen'):
-    if selected_rows:
-        shop_to_delete = selected_rows[0]['Geschäft']
-        delete_shop(shop_to_delete)
-
 # Hauptseite
 st.title("Hauptseite für verschiedene Geschäfte")
-st.write("Geschäfte und ihre Namen:")
-for shop in st.session_state.shops:
-    st.write(f"{shop['Geschäft']}")
-
-# Zusätzliche Inhalte für jedes Geschäft
-for shop in st.session_state.shops:
-    st.header(shop['Geschäft'])
-    st.write(f"Hier könnten Informationen für {shop['Geschäft']} stehen.")
+st.write("Geschäfte und ihre Namen werden nur in der Sidebar angezeigt.")
