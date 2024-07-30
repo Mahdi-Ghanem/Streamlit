@@ -1,28 +1,42 @@
 import streamlit as st
 
-# Title of the main page
-st.title("Hauptseite für verschiedene Geschäfte")
+# Initialisieren der Session-State für die Liste der Geschäfte
+if 'shops' not in st.session_state:
+    st.session_state.shops = []
 
-# Sidebar title
+# Funktion zum Hinzufügen eines neuen Geschäfts
+def add_shop():
+    st.session_state.shops.append(f"Geschäft {len(st.session_state.shops) + 1}")
+
+# Funktion zum Löschen eines Geschäfts
+def delete_shop(shop_to_delete):
+    st.session_state.shops = [shop for shop in st.session_state.shops if shop != shop_to_delete]
+
+# Sidebar
 st.sidebar.title("Geschäfte")
 
-# Number of shops
-number_of_shops = st.sidebar.number_input("Anzahl der Geschäfte", min_value=1, max_value=10, value=2, step=1)
+# Anzeige der vorhandenen Geschäfte und Eingabefelder zur Umbenennung
+for i, shop in enumerate(st.session_state.shops):
+    new_name = st.sidebar.text_input(f"Name des Geschäfts {i+1}", value=shop)
+    st.session_state.shops[i] = new_name
 
-# Dictionary to store shop names
-shop_names = {}
+# Schaltfläche zum Hinzufügen eines neuen Geschäfts
+if st.sidebar.button('+ Geschäft hinzufügen'):
+    add_shop()
 
-# Loop to create input fields for each shop
-for i in range(number_of_shops):
-    shop_name = st.sidebar.text_input(f"Name des Geschäfts {i+1}", value=f"Geschäft {i+1}")
-    shop_names[f"Geschäft {i+1}"] = shop_name
+# Schaltfläche zum Löschen eines Geschäfts
+if st.sidebar.button('- Geschäft löschen'):
+    shop_to_delete = st.sidebar.selectbox("Wählen Sie ein Geschäft zum Löschen", st.session_state.shops)
+    if st.sidebar.button('Löschen bestätigen'):
+        delete_shop(shop_to_delete)
 
-# Display the entered shop names on the main page
+# Hauptseite
+st.title("Hauptseite für verschiedene Geschäfte")
 st.write("Geschäfte und ihre Namen:")
-for key, value in shop_names.items():
-    st.write(f"{key}: {value}")
+for shop in st.session_state.shops:
+    st.write(f"{shop}")
 
-# Additional content for each shop
-for key, value in shop_names.items():
-    st.header(value)
-    st.write(f"Hier könnten Informationen für {value} stehen.")
+# Zusätzliche Inhalte für jedes Geschäft
+for shop in st.session_state.shops:
+    st.header(shop)
+    st.write(f"Hier könnten Informationen für {shop} stehen.")
