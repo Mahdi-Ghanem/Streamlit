@@ -100,6 +100,14 @@ else:
 st.header("Produkte")
 anzahlen = {}
 
+# Manuelles Hinzufügen von Produkten
+st.subheader("Manuelles Hinzufügen von Produkten")
+neues_produkt = st.text_input("Produktname")
+if st.button("Produkt hinzufügen"):
+    if neues_produkt:
+        neue_zeile = pd.DataFrame({"Produkt": [neues_produkt]})
+        lebensmittel = pd.concat([lebensmittel, neue_zeile], ignore_index=True)
+
 # Lebensmittel-Kategorie
 st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
 st.subheader("Lebensmittel")
