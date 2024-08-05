@@ -100,6 +100,9 @@ else:
 st.header("Produkte")
 anzahlen = {}
 
+# Layout in Spalten unterteilen
+col1, col2 = st.columns(2)
+
 # Manuelles Hinzufügen von Produkten
 st.subheader("Manuelles Hinzufügen von Produkten")
 neue_produkte = []
@@ -115,30 +118,35 @@ if st.button("+ Produkt hinzufügen"):
         st.session_state['neue_produkte'].append({"Produkt": neues_produkt_name, "Menge": neues_produkt_menge})
 
 # Zeige die manuell hinzugefügten Produkte
+st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
+st.subheader("Manuell hinzugefügte Produkte")
 for i, produkt in enumerate(st.session_state['neue_produkte']):
     st.markdown(f"<div class='product-name'>{produkt['Produkt']}</div>", unsafe_allow_html=True)
     anzahl = st.number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])
     st.session_state['neue_produkte'][i]["Menge"] = anzahl
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Lebensmittel-Kategorie
-st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
-st.subheader("Lebensmittel")
-for index, row in lebensmittel.iterrows():
-    product = row['Produkt']
-    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
-    anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_lebensmittel_{index}")
-    anzahlen[product] = anzahl
-st.markdown('</div>', unsafe_allow_html=True)
+with col1:
+    st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
+    st.subheader("Lebensmittel")
+    for index, row in lebensmittel.iterrows():
+        product = row['Produkt']
+        st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
+        anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_lebensmittel_{index}")
+        anzahlen[product] = anzahl
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Getränke-Kategorie
-st.markdown('<div class="category-box getraenke">', unsafe_allow_html=True)
-st.subheader("Getränke")
-for index, row in getraenke.iterrows():
-    product = row['Produkt']
-    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
-    anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_getraenke_{index}")
-    anzahlen[product] = anzahl
-st.markdown('</div>', unsafe_allow_html=True)
+with col2:
+    st.markdown('<div class="category-box getraenke">', unsafe_allow_html=True)
+    st.subheader("Getränke")
+    for index, row in getraenke.iterrows():
+        product = row['Produkt']
+        st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
+        anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_getraenke_{index}")
+        anzahlen[product] = anzahl
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Verpackung und Sonstiges-Kategorie
 st.markdown('<div class="category-box verpackung">', unsafe_allow_html=True)
