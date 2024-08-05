@@ -56,7 +56,7 @@ def apply_styles():
     st.markdown("""
     <style>
     .product-name {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
         margin-bottom: 5px;
     }
@@ -76,7 +76,7 @@ def apply_styles():
     }
     .stNumberInput input {
         padding: 5px;
-        font-size: 16px;
+        font-size: 14px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -115,38 +115,45 @@ if st.button("+ Produkt hinzufügen"):
         st.session_state['neue_produkte'].append({"Produkt": neues_produkt_name, "Menge": neues_produkt_menge})
 
 # Zeige die manuell hinzugefügten Produkte
+st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
+st.subheader("Manuell hinzugefügte Produkte")
+manual_products_cols = st.columns((2, 1))
 for i, produkt in enumerate(st.session_state['neue_produkte']):
-    st.markdown(f"<div class='product-name'>{produkt['Produkt']}</div>", unsafe_allow_html=True)
-    anzahl = st.number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])
+    manual_products_cols[0].markdown(f"<div class='product-name'>{produkt['Produkt']}</div>", unsafe_allow_html=True)
+    anzahl = manual_products_cols[1].number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])
     st.session_state['neue_produkte'][i]["Menge"] = anzahl
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Lebensmittel-Kategorie
 st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
 st.subheader("Lebensmittel")
+lebensmittel_cols = st.columns((2, 1))
 for index, row in lebensmittel.iterrows():
     product = row['Produkt']
-    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
-    anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_lebensmittel_{index}")
+    lebensmittel_cols[0].markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
+    anzahl = lebensmittel_cols[1].number_input("", min_value=0, step=1, key=f"{geschaeft}_lebensmittel_{index}")
     anzahlen[product] = anzahl
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Getränke-Kategorie
 st.markdown('<div class="category-box getraenke">', unsafe_allow_html=True)
 st.subheader("Getränke")
+getraenke_cols = st.columns((2, 1))
 for index, row in getraenke.iterrows():
     product = row['Produkt']
-    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
-    anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_getraenke_{index}")
+    getraenke_cols[0].markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
+    anzahl = getraenke_cols[1].number_input("", min_value=0, step=1, key=f"{geschaeft}_getraenke_{index}")
     anzahlen[product] = anzahl
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Verpackung und Sonstiges-Kategorie
 st.markdown('<div class="category-box verpackung">', unsafe_allow_html=True)
 st.subheader("Verpackung und Sonstiges")
+verpackung_cols = st.columns((2, 1))
 for index, row in verpackung.iterrows():
     product = row['Produkt']
-    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
-    anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_verpackung_{index}")
+    verpackung_cols[0].markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
+    anzahl = verpackung_cols[1].number_input("", min_value=0, step=1, key=f"{geschaeft}_verpackung_{index}")
     anzahlen[product] = anzahl
 st.markdown('</div>', unsafe_allow_html=True)
 
