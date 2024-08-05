@@ -113,7 +113,6 @@ neues_produkt_menge = st.number_input("Menge", min_value=0, step=1, key="neues_p
 if st.button("+ Produkt hinzufügen"):
     if neues_produkt_name:
         st.session_state['neue_produkte'].append({"Produkt": neues_produkt_name, "Menge": neues_produkt_menge})
-        st.experimental_rerun()  # Seite aktualisieren
 
 # Zeige die manuell hinzugefügten Produkte
 for i, produkt in enumerate(st.session_state['neue_produkte']):
