@@ -7,6 +7,22 @@ from reportlab.lib import colors
 from io import BytesIO
 
 # Beispiel-Daten für zwei Geschäfte
+data_meledy = {
+    "Produkt": [
+        "Brokkoli 2,5kg", "Gouda (15kg)", "Hamburgerbrötchen 55g", "Hamburgerbrötchen 80g", "Hollandaise Sauce", 
+        "Joghurt Griechisch", "Mehl", "Mozzarella", "Pommes 10 mm", "Pommes 7 mm", "Pommes salz", "Potato wedges 2.5 kg", 
+        "PUTEN 500g", "Salami Geschnitten 500G", "Snack Dressing", "Spinat 2,5KG",
+        "Ayran 20x250ml", "CocaCola Dosen","CocaCola Glas", "Cola ZERO Dosen", "Cola ZERO Glas",
+        "Fanta EXOTIK Dosen","Fanta EXOTIK Glas", "MEZZO MIX Dosen","MEZZO MIX Glas", "Spreit Dosen", "Spreit Glas",
+        "Uludag Dosen","Uludag Glas", "WASSER 0,5 L",
+        "Alufolie 150m", "B3 Deckel 100 st", "B3 Salatschale Weiß 100 st", "CC375 BOX PP375 ML 50St",
+        "CC50 Sossenbecher", "CC80 Sossenbecher", "Deckel 500 ST", "Döner Beutel 16×16", "Döner Box GROSS", 
+        "Döner Box KLEIN", "Gabel Plastik", "Hamburgerbox Klein 100st", "HP3 WARMHALTEVERPACKUNG 125st",
+        "Menubox Ungeteilt Beige 100st", "Papp Schalen GROß", "Papp Schalen KLEIN", "Pragsmentpapier 1/4",
+        "Pergamentpapier 1/16", "Pizza Box 26", "Pizza Box 30", "Servietten", "Trinkbecher 100 st"
+    ]
+}
+
 data_andere = {
     "Produkt": [
         "Brokkoli 2,5kg", "Gouda (15kg)", "Hamburgerbrötchen 55g", "Hamburgerbrötchen 80g", "Hollandaise Sauce", 
@@ -23,33 +39,19 @@ data_andere = {
     ]
 }
 
-data_meledi = {
-    "Produkt": [
-        "Geschälte Tomaten", "Artischockenherzen In Wasser 425ml", "Maïskörner", "Kichererbsen Dose", 
-        "Rapsöl", "Salat Mayonnaise", "Hartweizengrieß", "Griechischer Joghurt", "Hollandia", 
-        "Geraspelter Mozzarella", "Weißkäse", "Thunfisch", "Sambal Oelek", "Geröstete Auberginen Püree", 
-        "Frittieröl Halbflüssig 10L", "Meeresfrüchte", "Tafelessig", "Lammkeule Ohne Knochen", "Pfefferkörner"
-    ]
-}
-
 # Daten für beide Geschäfte in DataFrames umwandeln
 df_meledy = pd.DataFrame(data_meledy)
 df_andere = pd.DataFrame(data_andere)
 
 # Kategorien definieren
-def kategorien_definieren(df, geschaeft):
-    if geschaeft == "Meledi":
-        lebensmittel = df
-        getraenke = pd.DataFrame(columns=["Produkt"])
-        verpackung = pd.DataFrame(columns=["Produkt"])
-    else:
-        lebensmittel = df.iloc[0:16]
-        getraenke = df.iloc[16:30]
-        verpackung = df.iloc[30:]
+def kategorien_definieren(df):
+    lebensmittel = df.iloc[0:16]
+    getraenke = df.iloc[16:30]
+    verpackung = df.iloc[30:]
     return lebensmittel, getraenke, verpackung
 
-lebensmittel_meledi, getraenke_meledi, verpackung_meledi = kategorien_definieren(df_meledi, "Meledi")
-lebensmittel_andere, getraenke_andere, verpackung_andere = kategorien_definieren(df_andere, "Andere")
+lebensmittel_meledy, getraenke_meledy, verpackung_meledy = kategorien_definieren(df_meledy)
+lebensmittel_andere, getraenke_andere, verpackung_andere = kategorien_definieren(df_andere)
 
 # CSS-Styling
 def apply_styles():
