@@ -38,16 +38,16 @@ df_andere = pd.DataFrame(data_andere)
 
 # Kategorien definieren
 def kategorien_definieren(df):
-    lebensmittel = df.iloc[0:16]
-    getraenke = df.iloc[16:30]
-    verpackung = df.iloc[30:]
+    lebensmittel = df.iloc[0:]
+    getraenke = null
+    verpackung = null
     return lebensmittel, getraenke, verpackung
 
 def kategorien_definieren2(df,x):
     lebensmittel = df.iloc[0:]
     return lebensmittel
 
-lebensmittel_meledy= kategorien_definieren2(df_meledy)
+lebensmittel_andere, getraenke_meledy, verpackung_meledy= kategorien_definieren(df_meledy)
 lebensmittel_andere, getraenke_andere, verpackung_andere = kategorien_definieren(df_andere)
 
 # CSS-Styling
