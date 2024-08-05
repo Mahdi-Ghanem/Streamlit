@@ -33,7 +33,7 @@ data_andere = {
 }
 
 # Daten für beide Geschäfte in DataFrames umwandeln
-df_meledy = pd.DataFrame(data_meledy)
+df_meledy = pd.DataFrame(data_meledi)
 df_andere = pd.DataFrame(data_andere)
 
 # Kategorien definieren
