@@ -105,22 +105,21 @@ st.subheader("Manuelles Hinzufügen von Produkten")
 neue_produkte = []
 
 if 'neue_produkte' not in st.session_state:
-    st.session_state.neue_produkte = []
+    st.session_state['neue_produkte'] = []
 
 neues_produkt_name = st.text_input("Produktname", key="neues_produkt_name")
 neues_produkt_menge = st.number_input("Menge", min_value=0, step=1, key="neues_produkt_menge")
 
 if st.button("+ Produkt hinzufügen"):
     if neues_produkt_name:
-        st.session_state.neue_produkte.append({"Produkt": neues_produkt_name, "Menge": neues_produkt_menge})
-        st.session_state.neues_produkt_name = ""
-        st.session_state.neues_produkt_menge = 0
+        st.session_state['neue_produkte'].append({"Produkt": neues_produkt_name, "Menge": neues_produkt_menge})
+        st.experimental_rerun()  # Seite aktualisieren
 
 # Zeige die manuell hinzugefügten Produkte
-for i, produkt in enumerate(st.session_state.neue_produkte):
+for i, produkt in enumerate(st.session_state['neue_produkte']):
     st.markdown(f"<div class='product-name'>{produkt['Produkt']}</div>", unsafe_allow_html=True)
     anzahl = st.number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])
-    st.session_state.neue_produkte[i]["Menge"] = anzahl
+    st.session_state['neue_produkte'][i]["Menge"] = anzahl
 
 # Lebensmittel-Kategorie
 st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
@@ -158,7 +157,7 @@ if st.button("OK"):
     selected_products = {product: amount for product, amount in anzahlen.items() if amount > 0}
     
     # Manuell hinzugefügte Produkte einfügen
-    for produkt in st.session_state.neue_produkte:
+    for produkt in st.session_state['neue_produkte']:
         if produkt["Menge"] > 0:
             selected_products[produkt["Produkt"]] = produkt["Menge"]
     
