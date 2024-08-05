@@ -7,19 +7,12 @@ from reportlab.lib import colors
 from io import BytesIO
 
 # Beispiel-Daten für zwei Geschäfte
-data_meledy = {
+data_meledi = {
     "Produkt": [
-        "Brokkoli 2,5kg", "Gouda (15kg)", "Hamburgerbrötchen 55g", "Hamburgerbrötchen 80g", "Hollandaise Sauce", 
-        "Joghurt Griechisch", "Mehl", "Mozzarella", "Pommes 10 mm", "Pommes 7 mm", "Pommes salz", "Potato wedges 2.5 kg", 
-        "PUTEN 500g", "Salami Geschnitten 500G", "Snack Dressing", "Spinat 2,5KG",
-        "Ayran 20x250ml", "CocaCola Dosen","CocaCola Glas", "Cola ZERO Dosen", "Cola ZERO Glas",
-        "Fanta EXOTIK Dosen","Fanta EXOTIK Glas", "MEZZO MIX Dosen","MEZZO MIX Glas", "Spreit Dosen", "Spreit Glas",
-        "Uludag Dosen","Uludag Glas", "WASSER 0,5 L",
-        "Alufolie 150m", "B3 Deckel 100 st", "B3 Salatschale Weiß 100 st", "CC375 BOX PP375 ML 50St",
-        "CC50 Sossenbecher", "CC80 Sossenbecher", "Deckel 500 ST", "Döner Beutel 16×16", "Döner Box GROSS", 
-        "Döner Box KLEIN", "Gabel Plastik", "Hamburgerbox Klein 100st", "HP3 WARMHALTEVERPACKUNG 125st",
-        "Menubox Ungeteilt Beige 100st", "Papp Schalen GROß", "Papp Schalen KLEIN", "Pragsmentpapier 1/4",
-        "Pergamentpapier 1/16", "Pizza Box 26", "Pizza Box 30", "Servietten", "Trinkbecher 100 st"
+        "Geschälte Tomaten", "Artischockenherzen In Wasser 425ml", "Maïskörner", "Kichererbsen Dose", 
+        "Rapsöl", "Salat Mayonnaise", "Hartweizengrieß", "Griechischer Joghurt", "Hollandia", 
+        "Geraspelter Mozzarella", "Weißkäse", "Thunfisch", "Sambal Oelek", "Geröstete Auberginen Püree", 
+        "Frittieröl Halbflüssig 10L", "Meeresfrüchte", "Tafelessig", "Lammkeule Ohne Knochen", "Pfefferkörner"
     ]
 }
 
@@ -50,7 +43,11 @@ def kategorien_definieren(df):
     verpackung = df.iloc[30:]
     return lebensmittel, getraenke, verpackung
 
-lebensmittel_meledy, getraenke_meledy, verpackung_meledy = kategorien_definieren(df_meledy)
+def kategorien_definieren2(df,x):
+    lebensmittel = df.iloc[0:]
+    return lebensmittel
+
+lebensmittel_meledy= kategorien_definieren2(df_meledy)
 lebensmittel_andere, getraenke_andere, verpackung_andere = kategorien_definieren(df_andere)
 
 # CSS-Styling
