@@ -56,7 +56,7 @@ def apply_styles():
     st.markdown("""
     <style>
     .product-name {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
         margin-bottom: 5px;
     }
@@ -76,35 +76,7 @@ def apply_styles():
     }
     .stNumberInput input {
         padding: 5px;
-        font-size: 14px;
-    }
-    .product-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .product-table th, .product-table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
-    .product-table th {
-        background-color: #f2f2f2;
-        text-align: left;
-    }
-    .product-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 5px;
-        border: 1px solid #ddd;
-        margin-bottom: 5px;
-        border-radius: 5px;
-    }
-    .product-name {
-        flex: 1;
         font-size: 16px;
-    }
-    .product-input {
-        width: 80px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -143,29 +115,17 @@ if st.button("+ Produkt hinzufügen"):
         st.session_state['neue_produkte'].append({"Produkt": neues_produkt_name, "Menge": neues_produkt_menge})
 
 # Zeige die manuell hinzugefügten Produkte
-st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
-st.subheader("Manuell hinzugefügte Produkte")
 for i, produkt in enumerate(st.session_state['neue_produkte']):
-    st.markdown(f"""
-    <div class='product-container'>
-        <div class='product-name'>{produkt['Produkt']}</div>
-        <div class='product-input'>{st.number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])}</div>
-    </div>
-    """, unsafe_allow_html=True)
-    st.session_state['neue_produkte'][i]["Menge"] = st.number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])
-st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown(f"<div class='product-name'>{produkt['Produkt']}</div>", unsafe_allow_html=True)
+    anzahl = st.number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])
+    st.session_state['neue_produkte'][i]["Menge"] = anzahl
 
 # Lebensmittel-Kategorie
 st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
 st.subheader("Lebensmittel")
 for index, row in lebensmittel.iterrows():
     product = row['Produkt']
-    st.markdown(f"""
-    <div class='product-container'>
-        <div class='product-name'>{product}</div>
-        <div class='product-input'>{st.number_input("", min_value=0, step=1, key=f"{geschaeft}_lebensmittel_{index}")}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
     anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_lebensmittel_{index}")
     anzahlen[product] = anzahl
 st.markdown('</div>', unsafe_allow_html=True)
@@ -175,12 +135,7 @@ st.markdown('<div class="category-box getraenke">', unsafe_allow_html=True)
 st.subheader("Getränke")
 for index, row in getraenke.iterrows():
     product = row['Produkt']
-    st.markdown(f"""
-    <div class='product-container'>
-        <div class='product-name'>{product}</div>
-        <div class='product-input'>{st.number_input("", min_value=0, step=1, key=f"{geschaeft}_getraenke_{index}")}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
     anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_getraenke_{index}")
     anzahlen[product] = anzahl
 st.markdown('</div>', unsafe_allow_html=True)
@@ -190,12 +145,7 @@ st.markdown('<div class="category-box verpackung">', unsafe_allow_html=True)
 st.subheader("Verpackung und Sonstiges")
 for index, row in verpackung.iterrows():
     product = row['Produkt']
-    st.markdown(f"""
-    <div class='product-container'>
-        <div class='product-name'>{product}</div>
-        <div class='product-input'>{st.number_input("", min_value=0, step=1, key=f"{geschaeft}_verpackung_{index}")}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"<div class='product-name'>{product}</div>", unsafe_allow_html=True)
     anzahl = st.number_input("", min_value=0, step=1, key=f"{geschaeft}_verpackung_{index}")
     anzahlen[product] = anzahl
 st.markdown('</div>', unsafe_allow_html=True)
