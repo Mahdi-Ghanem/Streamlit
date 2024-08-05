@@ -102,11 +102,25 @@ anzahlen = {}
 
 # Manuelles Hinzufügen von Produkten
 st.subheader("Manuelles Hinzufügen von Produkten")
-neues_produkt = st.text_input("Produktname")
-if st.button("Produkt hinzufügen"):
-    if neues_produkt:
-        neue_zeile = pd.DataFrame({"Produkt": [neues_produkt]})
-        lebensmittel = pd.concat([lebensmittel, neue_zeile], ignore_index=True)
+neue_produkte = []
+
+if 'neue_produkte' not in st.session_state:
+    st.session_state.neue_produkte = []
+
+neues_produkt_name = st.text_input("Produktname", key="neues_produkt_name")
+neues_produkt_menge = st.number_input("Menge", min_value=0, step=1, key="neues_produkt_menge")
+
+if st.button("+ Produkt hinzufügen"):
+    if neues_produkt_name:
+        st.session_state.neue_produkte.append({"Produkt": neues_produkt_name, "Menge": neues_produkt_menge})
+        st.session_state.neues_produkt_name = ""
+        st.session_state.neues_produkt_menge = 0
+
+# Zeige die manuell hinzugefügten Produkte
+for i, produkt in enumerate(st.session_state.neue_produkte):
+    st.markdown(f"<div class='product-name'>{produkt['Produkt']}</div>", unsafe_allow_html=True)
+    anzahl = st.number_input("", min_value=0, step=1, key=f"manuell_{i}", value=produkt['Menge'])
+    st.session_state.neue_produkte[i]["Menge"] = anzahl
 
 # Lebensmittel-Kategorie
 st.markdown('<div class="category-box lebensmittel">', unsafe_allow_html=True)
@@ -142,6 +156,12 @@ st.markdown('</div>', unsafe_allow_html=True)
 if st.button("OK"):
     # Filtern der ausgewählten Produkte
     selected_products = {product: amount for product, amount in anzahlen.items() if amount > 0}
+    
+    # Manuell hinzugefügte Produkte einfügen
+    for produkt in st.session_state.neue_produkte:
+        if produkt["Menge"] > 0:
+            selected_products[produkt["Produkt"]] = produkt["Menge"]
+    
     if selected_products:
         st.session_state['selected_products'] = selected_products
         st.session_state['show_results'] = True
