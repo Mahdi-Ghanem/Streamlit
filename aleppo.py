@@ -33,22 +33,23 @@ data_andere = {
 }
 
 # Daten für beide Geschäfte in DataFrames umwandeln
-df_meledy = pd.DataFrame(data_meledi)
+df_meledi = pd.DataFrame(data_meledi)
 df_andere = pd.DataFrame(data_andere)
 
 # Kategorien definieren
-def kategorien_definieren(df):
-    lebensmittel = df.iloc[0:]
-    getraenke = null
-    verpackung = null
+def kategorien_definieren(df, geschaeft):
+    if geschaeft == "Meledi":
+        lebensmittel = df
+        getraenke = pd.DataFrame(columns=["Produkt"])
+        verpackung = pd.DataFrame(columns=["Produkt"])
+    else:
+        lebensmittel = df.iloc[0:16]
+        getraenke = df.iloc[16:30]
+        verpackung = df.iloc[30:]
     return lebensmittel, getraenke, verpackung
 
-def kategorien_definieren2(df,x):
-    lebensmittel = df.iloc[0:]
-    return lebensmittel
-
-lebensmittel_andere, getraenke_meledy, verpackung_meledy= kategorien_definieren(df_meledy)
-lebensmittel_andere, getraenke_andere, verpackung_andere = kategorien_definieren(df_andere)
+lebensmittel_meledi, getraenke_meledi, verpackung_meledi = kategorien_definieren(df_meledi, "Meledi")
+lebensmittel_andere, getraenke_andere, verpackung_andere = kategorien_definieren(df_andere, "Andere")
 
 # CSS-Styling
 def apply_styles():
@@ -86,14 +87,14 @@ apply_styles()
 st.title("🍔🍟 Einkaufsliste")
 
 # Geschäftsauswahl
-geschaefte = ["Meledy", "Andere"]
+geschaefte = ["Meledi", "Andere"]
 geschaeft = st.selectbox("Wähle ein Geschäft aus", geschaefte)
 
 # Daten basierend auf der Geschäftsauswahl setzen
-if geschaeft == "Meledy":
-    lebensmittel, getraenke, verpackung = lebensmittel_meledy, getraenke_meledy, verpackung_meledy
+if geschaeft == "Meledi":
+    lebensmittel, getraenke, verpackung = kategorien_definieren(df_meledi, geschaeft)
 else:
-    lebensmittel, getraenke, verpackung = lebensmittel_andere, getraenke_andere, verpackung_andere
+    lebensmittel, getraenke, verpackung = kategorien_definieren(df_andere, geschaeft)
 
 # Platz, um die Anzahl der Produkte einzugeben
 st.header("Produkte")
